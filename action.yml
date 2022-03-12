@@ -1,13 +1,20 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: Get Vercel deploy URL
+author: Bram Arcade
+description: Get latest Vercel deploy URL by commit's github user
 inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
+  vercel-token:
+    description: vercel secret token
     required: true
-    default: '1000'
+  github-token:
+    description: github secret token
+    required: true
+  delay-fetch-ms:
+    description: Number of milliseconds to wait to hit the Vercel API
+    required: false
+    default: 69
 outputs:
-  time: # output will be available to future steps
-    description: 'The current time after waiting'
+  vercel-deployment-url: # output will be available to future steps
+    description: The URL of the user\'s most recent vercel deploy
 runs:
   using: 'node16'
   main: 'dist/index.js'
