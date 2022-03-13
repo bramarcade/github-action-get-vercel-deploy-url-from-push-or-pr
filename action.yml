@@ -2,12 +2,6 @@ name: Get Vercel deploy URL
 author: Bram Arcade
 description: Get latest Vercel deploy URL by commit's github user
 inputs:
-  vercel-token:
-    description: vercel secret token
-    required: true
-  github-token:
-    description: github secret token
-    required: true
   delay-fetch-ms:
     description: Number of milliseconds to wait to hit the Vercel API
     required: false
