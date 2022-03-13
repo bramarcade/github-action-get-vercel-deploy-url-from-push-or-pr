@@ -36,6 +36,7 @@ async function run() {
     }
     // "curl https://api.vercel.com/v6/deployments?teamId=team_j9DH3uq1icmGSMJCyPtQOSg8 -H \"Accept: application/json\" -H \"Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}\""
 
+    
     const res = await axios.get('https://api.vercel.com/v6/deployments', {
       headers: {
         Accept: 'application/json',
