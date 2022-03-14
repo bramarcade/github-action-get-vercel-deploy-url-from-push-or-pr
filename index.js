@@ -6,7 +6,7 @@ const wait = require('./wait');
 // most @actions toolkit packages have async methods
 async function run() {
   try {
-    const ms = core.getInput('delay-fetch-ms');
+    const ms = parseInt(core.getInput('delay-fetch-ms'));
     core.info(`Waiting ${ms} milliseconds to hit Vercel's API`);
     core.info('(this isn\'t necessary but it soothes a primate impulse in my brain to know that the deploy WILL DEFINITELY have started)')
     await wait(ms);
