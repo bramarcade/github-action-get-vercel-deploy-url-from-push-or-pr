@@ -18,15 +18,11 @@ async function run() {
       deployCommit = github.context.sha;
     } else if (github.context.eventName === 'pull_request') {
       core.info('GOT TO THE PULL REQUEST BLOCK');
+      core.debug(github.context.payload.repository);
       core.debug(github.context.payload);
-      core.debug(github.context.owner);
-      core.debug(github.context.repository);
-      core.debug(github.context.owner.login);
-      core.debug(github.context.repository.name);
-      core.debug(github.context.number);
       const currentPR = await octokit.rest.pulls.get({
-        owner: github.context.owner.login, // 'bramarcade'
-        repo: github.context.repository.name, // 'bram-arcade' 
+        owner: github.context.payload.repository.owner.login, // 'bramarcade'
+        repo: github.context.payload.repository.name, // 'bram-arcade' 
         pull_number: github.context.number, // 1, 2, 3...
       });
       core.info('sdlkfj');
