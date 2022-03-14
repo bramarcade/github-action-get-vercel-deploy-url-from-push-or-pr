@@ -12748,11 +12748,16 @@ async function run() {
     if (github.context.eventName === 'push') { // this is good. this works fine.
       deployCommit = github.context.sha;
     } else if (github.context.eventName === 'pull_request') {
+      core.info('GOT TO THE PULL REQUEST BLOCK');
+      core.debug(github.context.login);
+      core.debug(github.context.name);
+      core.debug(github.context.number);
       const currentPR = await octokit.rest.pulls.get({
         owner: github.context.login, // 'bramarcade'
         repo: github.context.name, // 'bram-arcade' 
         pull_number: github.context.number,
       });
+      core.info('sdlkfj');
       if (currentPR.status !== 200) {
         throw 'Could not get information about the current pull request';
       }
