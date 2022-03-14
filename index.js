@@ -21,9 +21,9 @@ async function run() {
       core.debug(github.context.payload.repository);
       core.debug(github.context.payload);
       const currentPR = await octokit.rest.pulls.get({
-        owner: github.context.payload.repository.owner.login, // 'bramarcade'
-        repo: github.context.payload.repository.name, // 'bram-arcade' 
-        pull_number: github.context.number, // 1, 2, 3...
+        owner: github.context.payload.repository.owner.login, // 'bramarcade', pretty confident this is good
+        repo: github.context.payload.repository.name, // 'bram-arcade' // ppretty confident in this one too
+        pull_number: github.context.payload.number, // 1, 2, 3...
       });
       core.info('sdlkfj');
       if (currentPR.status !== 200) {
