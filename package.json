@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
+    "abc": "YOU HAVE TO RUN PREPARE BEFORE EVERY SINGLE PUSH. IT WON'T BUILD AUTOMATICALLY.",
     "prepare": "ncc build index.js -o dist --source-map --license licenses.txt",
+    "def": "YOU HAVE TO RUN PREPARE BEFORE EVERY SINGLE PUSH. IT WON'T BUILD AUTOMATICALLY.",
     "test": "jest",
     "all": "npm run lint && npm run prepare && npm run test"
   },
