@@ -2,7 +2,7 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 const axios = require('axios').default;
 // const wait = require('./wait');
-
+core.debug('IS ANYTHING FUCKING WORKING IN THIS PACKAGE?');
 // most @actions toolkit packages have async methods
 async function run() {
   try {
