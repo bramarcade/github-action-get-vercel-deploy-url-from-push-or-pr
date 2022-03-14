@@ -18,6 +18,7 @@ async function run() {
       deployCommit = github.context.sha;
     } else if (github.context.eventName === 'pull_request') {
       core.info('GOT TO THE PULL REQUEST BLOCK');
+      core.debug(github.context);
       core.debug(github.context.login);
       core.debug(github.context.name);
       core.debug(github.context.number);
