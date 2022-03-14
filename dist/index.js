@@ -12742,14 +12742,9 @@ async function run() {
     core.info('(this isn\'t necessary but it soothes a primate impulse in my brain to know that the deploy WILL DEFINITELY have started)')
     await wait(ms);
 
-    // const githubToken = core.getInput('github-token');
-    // core.setSecret(githubToken);
-    // const vercelToken = core.getInput('vercel-token');
-    // core.setSecret(vercelToken);
     const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
 
     let deployCommit = '';
-    core.debug(JSON.stringify(github.context)); // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true https://github.com/actions/toolkit/blob/master/docs/action-debugging.md#how-to-access-step-debug-logs
     if (github.context.eventName === 'push') { // this is good. this works fine.
       deployCommit = github.context.sha;
     } else if (github.context.eventName === 'pull_request') {
@@ -12778,14 +12773,12 @@ async function run() {
         teamId: process.env.VERCEL_TEAM_ID,
       }
     })
-    core.debug(res.data);
     const deploy = res.data.deployments.find((deploy) => deploy.meta.githubCommitSha === deployCommit);
+    // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
+    // https://github.com/actions/toolkit/blob/master/docs/action-debugging.md#how-to-access-step-debug-logs
     core.debug(deploy);
-    // deployments[x].meta.githubCommitSha
-    // fetch that sucker!
-    let url = deployCommit;
 
-    core.setOutput('deploymentUrl', url);
+    core.setOutput('deploymentUrl', deploy.url);
   } catch (error) {
     core.setFailed(error.message);
   }
