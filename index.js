@@ -17,19 +17,15 @@ async function run() {
     if (github.context.eventName === 'push') { // this is good. this works fine.
       deployCommit = github.context.sha;
     } else if (github.context.eventName === 'pull_request') {
-      core.info('GOT TO THE PULL REQUEST BLOCK');
-      core.debug(github.context.payload.repository);
-      core.debug(github.context.payload);
       const currentPR = await octokit.rest.pulls.get({
         owner: github.context.payload.repository.owner.login, // 'bramarcade', pretty confident this is good
         repo: github.context.payload.repository.name, // 'bram-arcade' // ppretty confident in this one too
         pull_number: github.context.payload.number, // 1, 2, 3...
       });
-      core.info('sdlkfj');
+      core.debug(currentPR);
       if (currentPR.status !== 200) {
         throw 'Could not get information about the current pull request';
       }
-      core.debug(currentPR.data);
       deployCommit = currentPR.data.head.sha;
     } else {
       throw 'Action was not run on a push or a pull request. Could not find deployCommit.';
