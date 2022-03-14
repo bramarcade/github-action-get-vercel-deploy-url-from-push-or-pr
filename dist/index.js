@@ -12749,7 +12749,7 @@ async function run() {
       deployCommit = github.context.sha;
     } else if (github.context.eventName === 'pull_request') {
       core.info('GOT TO THE PULL REQUEST BLOCK');
-      core.debug(github.context);
+      core.debug(github.context.payload);
       core.debug(github.context.owner);
       core.debug(github.context.repository);
       core.debug(github.context.owner.login);
