@@ -9,7 +9,8 @@ async function run() {
     const ms = core.getInput('delay-fetch-ms');
     core.info(`Waiting ${ms} milliseconds to hit Vercel's API`);
     core.info('(this isn\'t necessary but it soothes a primate impulse in my brain to know that the deploy WILL DEFINITELY have started)')
-    await wait(parseInt(ms));
+    await wait(ms);
+    // add a bunch of debugs to this biz and see what's up
 
     // const githubToken = core.getInput('github-token');
     // core.setSecret(githubToken);
@@ -43,7 +44,7 @@ async function run() {
         Authorization: `Bearer ${process.env.VERCEL_TOKEN}`,
       },
       params: {
-        teamId: 'team_j9DH3uq1icmGSMJCyPtQOSg8',
+        teamId: process.env.VERCEL_TEAM_ID,
       }
     })
     core.info(res.data);
