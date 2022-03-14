@@ -1,16 +1,15 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const axios = require('axios').default;
-// const wait = require('./wait');
-core.debug('IS ANYTHING FUCKING WORKING IN THIS PACKAGE?');
+const wait = require('./wait');
+
 // most @actions toolkit packages have async methods
 async function run() {
   try {
-    // const ms = core.getInput('delay-fetch-ms');
-    // core.debug(`Waiting ${ms} milliseconds to hit Vercel's API`);
-    // core.debug('(this isn\'t necessary but it soothes a primate impulse in my brain to know that the deploy WILL DEFINITELY have started)')
-    // await wait(ms);
-    // add a bunch of debugs to this biz and see what's up
+    const ms = core.getInput('delay-fetch-ms');
+    core.info(`Waiting ${ms} milliseconds to hit Vercel's API`);
+    core.info('(this isn\'t necessary but it soothes a primate impulse in my brain to know that the deploy WILL DEFINITELY have started)')
+    await wait(ms);
 
     // const githubToken = core.getInput('github-token');
     // core.setSecret(githubToken);
@@ -20,17 +19,18 @@ async function run() {
 
     let deployCommit = '';
     core.debug(JSON.stringify(github.context)); // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true https://github.com/actions/toolkit/blob/master/docs/action-debugging.md#how-to-access-step-debug-logs
-    if (github.context.eventName === 'push') {
-      deployCommit = github.headCommit.id;
+    if (github.context.eventName === 'push') { // this is good. this works fine.
+      deployCommit = github.context.sha;
     } else if (github.context.eventName === 'pull_request') {
       const currentPR = await octokit.rest.pulls.get({
-        owner: github.context.repository.owner.login, // 'bramarcade'
-        repo: github.context.repository.name, // 'bram-arcade'
+        owner: github.context.login, // 'bramarcade'
+        repo: github.context.name, // 'bram-arcade' 
         pull_number: github.context.number,
       });
       if (currentPR.status !== 200) {
         throw 'Could not get information about the current pull request';
       }
+      core.debug(currentPR.data);
       deployCommit = currentPR.data.head.sha;
     } else {
       throw 'Action was not run on a push or a pull request. Could not find deployCommit.';
