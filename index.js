@@ -7,8 +7,8 @@ const wait = require('./wait');
 async function run() {
   try {
     const ms = core.getInput('delay-fetch-ms');
-    core.info(`Waiting ${ms} milliseconds to hit Vercel's API`);
-    core.info('(this isn\'t necessary but it soothes a primate impulse in my brain to know that the deploy WILL DEFINITELY have started)')
+    core.debug(`Waiting ${ms} milliseconds to hit Vercel's API`);
+    core.debug('(this isn\'t necessary but it soothes a primate impulse in my brain to know that the deploy WILL DEFINITELY have started)')
     await wait(ms);
     // add a bunch of debugs to this biz and see what's up
 
@@ -19,7 +19,7 @@ async function run() {
     const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
 
     let deployCommit = '';
-    core.info(JSON.stringify(github.context)); // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true https://github.com/actions/toolkit/blob/master/docs/action-debugging.md#how-to-access-step-debug-logs
+    core.debug(JSON.stringify(github.context)); // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true https://github.com/actions/toolkit/blob/master/docs/action-debugging.md#how-to-access-step-debug-logs
     if (github.context.eventName === 'push') {
       deployCommit = github.headCommit.id;
     } else if (github.context.eventName === 'pull_request') {
@@ -47,9 +47,9 @@ async function run() {
         teamId: process.env.VERCEL_TEAM_ID,
       }
     })
-    core.info(res.data);
+    core.debug(res.data);
     const deploy = res.data.deployments.find((deploy) => deploy.meta.githubCommitSha === deployCommit);
-    core.info(deploy);
+    core.debug(deploy);
     // deployments[x].meta.githubCommitSha
     // fetch that sucker!
     let url = deployCommit;
