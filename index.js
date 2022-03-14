@@ -1,15 +1,15 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const axios = require('axios').default;
-const wait = require('./wait');
+// const wait = require('./wait');
 
 // most @actions toolkit packages have async methods
 async function run() {
   try {
-    const ms = core.getInput('delay-fetch-ms');
-    core.debug(`Waiting ${ms} milliseconds to hit Vercel's API`);
-    core.debug('(this isn\'t necessary but it soothes a primate impulse in my brain to know that the deploy WILL DEFINITELY have started)')
-    await wait(ms);
+    // const ms = core.getInput('delay-fetch-ms');
+    // core.debug(`Waiting ${ms} milliseconds to hit Vercel's API`);
+    // core.debug('(this isn\'t necessary but it soothes a primate impulse in my brain to know that the deploy WILL DEFINITELY have started)')
+    // await wait(ms);
     // add a bunch of debugs to this biz and see what's up
 
     // const githubToken = core.getInput('github-token');
