@@ -22,7 +22,6 @@ async function run() {
         repo: github.context.payload.repository.name, // 'bram-arcade' // ppretty confident in this one too
         pull_number: github.context.payload.number, // 1, 2, 3...
       });
-      core.debug(currentPR);
       if (currentPR.status !== 200) {
         throw 'Could not get information about the current pull request';
       }
@@ -30,9 +29,7 @@ async function run() {
     } else {
       throw 'Action was not run on a push or a pull request. Could not find deployCommit.';
     }
-    // "curl https://api.vercel.com/v6/deployments?teamId=team_j9DH3uq1icmGSMJCyPtQOSg8 -H \"Accept: application/json\" -H \"Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}\""
 
-    
     const res = await axios.get('https://api.vercel.com/v6/deployments', {
       headers: {
         Accept: 'application/json',
@@ -41,12 +38,8 @@ async function run() {
       params: {
         teamId: process.env.VERCEL_TEAM_ID,
       }
-    })
+    });
     const deploy = res.data.deployments.find((deploy) => deploy.meta.githubCommitSha === deployCommit);
-    // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
-    // https://github.com/actions/toolkit/blob/master/docs/action-debugging.md#how-to-access-step-debug-logs
-    core.debug(deploy);
-
     core.setOutput('deploymentUrl', deploy.url);
   } catch (error) {
     core.setFailed(error.message);
