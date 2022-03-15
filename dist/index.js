@@ -12742,17 +12742,22 @@ async function run() {
     core.info('(this isn\'t necessary but it soothes a primate impulse in my brain to know that the deploy WILL DEFINITELY have started)')
     await wait(ms);
 
+    core.info('getting Octokit');
     const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
+    core.info('got Octokit');
 
     let deployCommit = '';
     if (github.context.eventName === 'push') { // this is good. this works fine.
+      core.info('push event');
       deployCommit = github.context.sha;
     } else if (github.context.eventName === 'pull_request') {
+      core.info('PR event');
       const currentPR = await octokit.rest.pulls.get({
         owner: github.context.payload.repository.owner.login, // 'bramarcade', pretty confident this is good
         repo: github.context.payload.repository.name, // 'bram-arcade' // ppretty confident in this one too
         pull_number: github.context.payload.number, // 1, 2, 3...
       });
+      core.info('successful PR fetch');
       if (currentPR.status !== 200) {
         throw 'Could not get information about the current pull request';
       }
@@ -12761,6 +12766,7 @@ async function run() {
       throw 'Action was not run on a push or a pull request. Could not find deployCommit.';
     }
 
+    core.info('doing an axios');
     const res = await axios.get('https://api.vercel.com/v6/deployments', {
       headers: {
         Accept: 'application/json',
@@ -12770,7 +12776,10 @@ async function run() {
         teamId: process.env.VERCEL_TEAM_ID,
       }
     });
+    core.info('axios done');
+    core.debug(res.data);
     const deploy = res.data.deployments.find((deploy) => deploy.meta.githubCommitSha === deployCommit);
+    core.debug(deploy);
     core.setOutput('deploymentUrl', deploy.url);
   } catch (error) {
     core.setFailed(error.message);
