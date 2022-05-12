@@ -47,7 +47,15 @@ async function run() {
     });
     core.info('axios done');
     core.debug(res.data);
-    const deploy = res.data.deployments.find((deploy) => deploy.meta.githubCommitSha === deployCommit);
+    let deploy = res.data.deployments.find((deploy) => deploy.meta.githubCommitSha === deployCommit);
+    core.debug(deploy);
+    if (!deploy) {
+      // The only time this happens that I know of is a dependabot merge.
+      // only one person should ever be responsible for these at a time, so unlike with
+      // user commits, concurrency shouldn't be a problem. hence, we just grab the latest dependabot build.
+      deploy = res.data.deployments.find((deploy) => deploy.creator.githubLogin === 'dependabot[bot]');
+      core.debug(deploy);
+    }
     core.debug(deploy);
     core.setOutput('deploymentUrl', deploy.url);
   } catch (error) {
