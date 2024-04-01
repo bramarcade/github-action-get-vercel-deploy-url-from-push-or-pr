@@ -10,5 +10,5 @@ outputs:
   vercel-deployment-url: # output will be available to future steps
     description: The URL of the user\'s most recent vercel deploy
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'dist/index.js'
